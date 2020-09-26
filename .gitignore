@@ -136,3 +136,9 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Pycharm's IDEA files
+.idea/
+
+# MacOS unecessary files
+**/.DS_Store
