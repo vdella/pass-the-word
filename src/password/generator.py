@@ -19,7 +19,3 @@ class Generator:
             word = word[:word.find('\n')]
             password.append(word)
         return '-'.join(password) if split else ''.join(password)
-
-
-print(Generator.generate_password(True))
-print(Generator.generate_password(False))
