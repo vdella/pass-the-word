@@ -1,2 +1,2 @@
 # pass-the-word
-Password generator using Micronaut with Kotlin.
+Password generator using Flask with Python.
