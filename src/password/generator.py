@@ -5,7 +5,12 @@ from src.parser.wordreader import Reader
 class Generator:
 
     @staticmethod
-    def generate(split: bool) -> str:
+    def generate_password(split: bool) -> str:
+        """
+        :param split: Decides if the words will be separated by '-'.
+        :return: 4 concatenated words from 'dict.txt'.
+        """
+
         words, sup_limit = Reader.words()
         password = []
 
@@ -16,5 +21,5 @@ class Generator:
         return '-'.join(password) if split else ''.join(password)
 
 
-print(Generator.generate(True))
-print(Generator.generate(False))
+print(Generator.generate_password(True))
+print(Generator.generate_password(False))
