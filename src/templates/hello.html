@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pass-the-word</title>
+</head>
+<body>
+<h1>Create your password!</h1>
+    <form method=post action="/show">
+        <input type="radio" id="random" name="password_gen_type">
+            <label for="random">Random</label><br>
+        <br>
+        <input type="radio" id="dict" name="password_gen_type">
+            <label for="dict">By dictionary</label><br>
+        <br>
+        <label for="phrase">Do you want to write something as a password seed? (OPTIONAL)</label><br>
+            <input type="text" id="phrase" name="phrase" value="" hidden>
+        <br>
+        <input type="checkbox" id="trailing" name="trailing" value="false" hidden>
+            <label for="trailing">Do you want a your password to be separated by a horizontal slash?</label><br>
+        <br>
+        <input type="submit">
+    </form>
+</body>
+</html>
