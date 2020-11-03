@@ -1,6 +1,6 @@
 from random import randint
-from src.parser.wordreader import Reader
 from base64 import standard_b64encode
+from src.parser.reader import Reader
 
 
 class Generator:
