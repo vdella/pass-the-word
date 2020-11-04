@@ -32,12 +32,9 @@ class Generator:
         if phrase is None:
             return Generator.__gen_random()
         else:
-            return standard_b64encode(phrase)
+            return standard_b64encode(phrase.encode('UTF-8'))
 
     @staticmethod
     def __gen_random() -> bytes:
         words = [randint(0, 255) for _ in range(18)]
         return standard_b64encode(bytes(words))
-
-
-print(Generator.gen_password_base64())
