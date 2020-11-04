@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     <title>pass-the-word</title>
-</head>
-<body>
-<h1>Create your password!</h1>
-    <form method=post action="/show">
-        <input type="radio" id="random" name="password_gen_type">
-            <label for="random">Random</label><br>
-        <br>
-        <input type="radio" id="dict" name="password_gen_type">
-            <label for="dict">By dictionary</label><br>
-        <br>
-        <label for="phrase">Do you want to write something as a password seed? (OPTIONAL)</label><br>
-            <input type="text" id="phrase" name="phrase" value="" hidden>
-        <br>
-        <input type="checkbox" id="trailing" name="trailing" value="false" hidden>
-            <label for="trailing">Do you want a your password to be separated by a horizontal slash?</label><br>
-        <br>
-        <input type="submit">
-    </form>
-</body>
+
+    <form action="{{ url_for("gen_password")}}" method="post">
+
+    <label for="random">Random</label>
+    <input type="radio" id="random" value="random" name="password_gen_type">
+    <br>
+
+    <label for="phrase">Password seed (OPTIONAL)</label>
+    <input type="text" id="phrase" name="phrase">
+    <br>
+
+    <label for="dict">By dictionary</label>
+    <input type="radio" id="dict" value="dict" name="password_gen_type">
+    <br>
+
+    <label for="trailing">Do you want to visibly separate words?</label>
+    <input type="checkbox" id="trailing" name="trailing">
+    <br>
+
+    <button type="submit">Submit</button>
 </html>
