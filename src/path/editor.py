@@ -1,10 +1,13 @@
 import os
 
 
-class Editor:
+class Constants:
+    root_path = os.path.abspath('pass-the-word/resources')
+    AUTH = root_path + '/auth.txt'
+    DICT = root_path + '/dict.txt'
 
     @staticmethod
-    def edit_given_path() -> str:
+    def edit_given_path(artifact_path: str) -> str:
         """
         As Python works with relative paths when opening files,
         it will presume that we are calling a file that is inside
@@ -12,9 +15,7 @@ class Editor:
 
         We need to edit a given path string to be able to handle
         operations inside 'dict.txt'.
-        :return: 'dict.txt's path without string 'src/',
-        which is added when we try to open() 'dict.txt' inside main.py.
         """
 
-        path = str(os.path.abspath('resources/dict.txt'))
+        path = str(os.path.abspath(artifact_path))
         return path.replace('src/', '')

@@ -1,0 +1,8 @@
+username: della
+password: b'$2b$12$/1ARzoal6lT7KbJGCWlbFOzROPlChElPxG/ZwaRnVq/dUeMEV0IcW'
+elements: {'buga': '0000', 'xxxxxx': '1111111'}
+
+username: fabiana
+password: b'$2b$12$z/C0YRifNFYfaEzTOihqSuNnpe29lj0XHUojbAFj66RoioOS334vu'
+elements: {'uga': '2345', 'iha': '123456789'}
+
