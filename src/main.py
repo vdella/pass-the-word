@@ -61,7 +61,7 @@ else:
             label: str = input('Write the label for a new password. ')
             word: str = input('Write the password to be stored. ')
             set_label(user, label, word)
-            update(user)
+            update_labels(user)
         elif opt == -1:
             exit(0)
         else:
