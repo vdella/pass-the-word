@@ -1,10 +1,7 @@
 import os
 
 
-class Constants:
-    root_path = os.path.abspath('pass-the-word/resources')
-    AUTH = root_path + '/auth.txt'
-    DICT = root_path + '/dict.txt'
+class Editor:
 
     @staticmethod
     def edit_given_path(artifact_path: str) -> str:

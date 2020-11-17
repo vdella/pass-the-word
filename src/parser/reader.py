@@ -1,4 +1,4 @@
-from src.path.path import Editor
+from src.path.editor import Editor
 
 
 class Reader:
@@ -14,7 +14,7 @@ class Reader:
         found inside 'dict.txt'
         """
 
-        path = Editor().edit_given_path()
+        path = Editor().edit_given_path('resources/dict.txt').replace('parser/', '')
         file = open(path, 'r')
         lines = file.readlines()
         words = dict()
