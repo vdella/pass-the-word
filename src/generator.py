@@ -5,7 +5,7 @@ from base64 import standard_b64encode
 class Generator:
 
     @staticmethod
-    def words() -> dict and int:
+    def __words() -> dict and int:
         """
         Reads 'dict.txt' and puts every
         word inside a dict().
@@ -23,14 +23,13 @@ class Generator:
             iterator = iterator + 1
         return words, len(lines)
 
-    @staticmethod
-    def gen_password_by_dict(split: bool) -> str:
+    def gen_password_by_dict(self, split: bool) -> str:
         """
         :param split: Decides if the words will be separated by '-'.
         :return: 4 concatenated words from 'dict.txt'.
         """
 
-        words, sup_limit = Generator.words()
+        words, sup_limit = self.__words()
         password = []
 
         for _ in range(4):
@@ -39,8 +38,7 @@ class Generator:
             password.append(word)
         return '-'.join(password) if split else ''.join(password)
 
-    @staticmethod
-    def gen_password_base64(phrase: str = None) -> bytes:
+    def gen_password_base64(self, phrase: str = None) -> bytes:
         """
         :param phrase: will be digested according to base64 alphabet.
         phrase can also be ''. In that case, we'll presume the user
@@ -48,7 +46,7 @@ class Generator:
         :return: base64 digested string.
         """
         if phrase is None:
-            return Generator.__gen_random()
+            return self.__gen_random()
         else:
             return standard_b64encode(phrase.encode('UTF-8'))
 
