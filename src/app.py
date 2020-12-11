@@ -1,53 +1,74 @@
-from flask import Flask, render_template, redirect, session, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, FrontpageForm
-# from flask_sqlalchemy import SQLAlchemy
-# import os
-# from models import User
+from forms import LoginForm, FrontpageForm, UserOperationForm, LabelCreationForm
+import database
+import os
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
-# app.config['SECRET_KEY'] = 'Like a movie, you are the main role just like me.'
+app.jinja_env.globals.update(get_labels=database.retrieve_labels)
 
-# basedir = os.path.abspath(os.path.dirname(__file__))
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
 
-# database = SQLAlchemy(app)
-# database.drop_all()
-# database.create_all()
+
+signing_up: bool = False
+session_user = tuple()
 
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    global signing_up
     form = FrontpageForm()
     if form.validate_on_submit():
-        session['is_signup'] = form.choice.data == 0
+        print(form.choice.data)
+        signing_up = True if int(form.choice.data) == 0 else False
+        print(signing_up)
         return redirect(url_for('access_db'))
     return render_template('index.html', form=form)
 
 
-@app.route('/access')
+@app.route('/access', methods=['POST', 'GET'])
 def access_db():
     form = LoginForm()
-    # if form.validate_on_submit():
-    #
-    #     # We need to see if a given user indeed exists inside the database.
-    #     def user_exists():
-    #         return database.Query(database.exists().where(User.name == form.username)).scalar()
-    #
-    #     if not session.get('is_signup'):
-    #         if user_exists():
-    #             flash('Username taken!')
-    #             return redirect(url_for('access_db'))
-    #         else:
-    #             # We must save a digested user password to increase database invasion security.
-    #             new_user = User(name=form.username, key=bcrypt.hashpw(form.userkey, bcrypt.gensalt()))
-    #             db.session.add(new_user)
-    #             db.session.commit()
-    #     else:
-    #         if not user_exists():
-    #             flash('Cannot find username in database!')
-    #         else:
-    #             return
+    global session_user
+    if form.validate_on_submit():
+        session_user = database.check_user(form.username.data)
+        if not signing_up:
+            if session_user is not None:
+                flash('Username taken!')
+                return redirect(url_for('access_db'))
+            else:
+                database.create_user(form.username.data, form.userkey.data)
+                return redirect(url_for('user_choice'))
+        else:
+            if session_user is None:
+                flash('Cannot find username in database!')
+            else:
+                return redirect(url_for('user_choice'))
     return render_template('user.html', form=form)
+
+
+@app.route('/choice', methods=['POST', 'GET'])
+def user_choice():
+    form = UserOperationForm()
+    if form.validate_on_submit():
+        if int(form.choice.data) == 0:
+            return redirect(url_for('label_view'))
+        else:
+            return redirect(url_for('label_creation'))
+    return render_template('choice.html', form=form)
+
+
+@app.route('/creation', methods=['POST', 'GET'])
+def label_creation():
+    form = LabelCreationForm()
+    if form.validate_on_submit():
+        database.create_label(form.name.data, form.key.data, session_user[0])
+        return redirect(url_for('user_choice'))
+    return render_template('label_creation.html', form=form)
+
+
+@app.route('/view', methods=['POST', 'GET'])
+def label_view():
+    return render_template('label_view.html', session_user_id=session_user[0])
