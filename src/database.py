@@ -10,6 +10,11 @@ def create_user(name: str, password: str):
 
 
 def check_user(name: str):
+    """Fetches all users inside the registry and checks, for each,
+    the username attribute.
+    :param name: as the wanted username to be searched.
+    :return: user's data tuple, if found, or None, if not.
+    """
     cur.execute('''SELECT USER_ID, NAME, PASSWORD FROM "user"''')
     rows = cur.fetchall()
     for row in rows:
@@ -25,6 +30,10 @@ def create_label(name: str, content: str, user_id: int) -> ():
 
 
 def retrieve_labels(user_id: int) -> dict:
+    """Fetches all rows inside "labels" database and retrieves only
+    those related to the given user id.
+    :return: the user label dictionary.
+    """
     user_label_table = dict()
     cur.execute('''SELECT USER_ID, NAME, CONTENT FROM "labels"''')
     rows = cur.fetchall()

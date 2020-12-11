@@ -31,6 +31,13 @@ class UserOperationForm(FlaskForm):
 
 
 class LabelCreationForm(FlaskForm):
+    """Works alongside a Generator() object. A user must choose one of 2 options:
+    if the wanted password will be easy-to-remember (remarkable) or randomly generated.
+    Fields 'text_field' and random_button_choice don't have the DataRequired() attribute,
+    as the text field can be left empty and the seed will be generated in a purely random
+    way; however, as radio button fields cannot be left empty, a third option was created
+    to work with "not wanting to generate remarkable passwords" right now.
+    """
     name = StringField('Type a reminder for the key', validators=[DataRequired()])
     choice = RadioField('Choose an option', choices=[(0, 'Remarkable'), (1, 'Random')])
     text_field = StringField('Type a seed if Random was chosen, if you want')

@@ -6,11 +6,9 @@ class Generator:
 
     @staticmethod
     def __words() -> dict and int:
-        """
-        Reads 'dict.txt' and puts every
+        """Reads 'dict.txt' and puts every
         word inside a dict().
-
-        :return: a dict[number] word and the max amount of words
+        :return: a dict[number] word and the max amount of words (lines)
         found inside 'dict.txt'
         """
         file = open('../dict.txt', 'r')
@@ -24,8 +22,7 @@ class Generator:
         return words, len(lines)
 
     def gen_password_by_dict(self, split: bool) -> str:
-        """
-        :param split: Decides if the words will be separated by '-'.
+        """:param split: Decides if the words will be separated by '-'.
         :return: 4 concatenated words from 'dict.txt'.
         """
 
@@ -38,17 +35,16 @@ class Generator:
             password.append(word)
         return '-'.join(password) if split else ''.join(password)
 
-    def gen_password_base64(self, phrase: str = None) -> bytes:
-        """
-        :param phrase: will be digested according to base64 alphabet.
-        phrase can also be ''. In that case, we'll presume the user
+    def gen_password_base64(self, seed: str = None) -> bytes:
+        """:param seed: will be digested according to base64 alphabet.
+        seed can also be ''. In that case, we'll presume the user
         does not want to send a text for generating the password.
         :return: base64 digested string.
         """
-        if phrase is None:
+        if seed is None:
             return self.__gen_random()
         else:
-            return standard_b64encode(phrase.encode('UTF-8'))
+            return standard_b64encode(seed.encode('UTF-8'))
 
     @staticmethod
     def __gen_random() -> bytes:
