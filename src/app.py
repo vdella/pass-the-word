@@ -1,16 +1,13 @@
-from flask import Flask, render_template, redirect, url_for, flash
-from flask_bootstrap import Bootstrap
+from flask import render_template, redirect, url_for, flash
 from forms import LoginForm, FrontpageForm, UserOperationForm, LabelCreationForm
+from src import SingletonApp
 import database
-import os
+from generator import Generator
 
-app = Flask(__name__)
-bootstrap = Bootstrap(app)
-app.jinja_env.globals.update(get_labels=database.retrieve_labels)
-
-SECRET_KEY = os.urandom(32)
-app.config['SECRET_KEY'] = SECRET_KEY
-
+app = SingletonApp.get_instance()
+SingletonApp.gen_servlet_secret_key()
+SingletonApp.do_bootstrap()
+SingletonApp.update_jinja_env(database.retrieve_labels)
 
 signing_up: bool = False
 session_user = tuple()
@@ -21,9 +18,7 @@ def index():
     global signing_up
     form = FrontpageForm()
     if form.validate_on_submit():
-        print(form.choice.data)
         signing_up = True if int(form.choice.data) == 0 else False
-        print(signing_up)
         return redirect(url_for('access_db'))
     return render_template('index.html', form=form)
 
@@ -33,18 +28,19 @@ def access_db():
     form = LoginForm()
     global session_user
     if form.validate_on_submit():
-        session_user = database.check_user(form.username.data)
         if not signing_up:
-            if session_user is not None:
+            if database.check_user(form.username.data) is not None:
                 flash('Username taken!')
                 return redirect(url_for('access_db'))
             else:
                 database.create_user(form.username.data, form.userkey.data)
+                session_user = database.check_user(form.username.data)
                 return redirect(url_for('user_choice'))
         else:
-            if session_user is None:
+            if database.check_user(form.username.data) is None:
                 flash('Cannot find username in database!')
             else:
+                session_user = database.check_user(form.username.data)
                 return redirect(url_for('user_choice'))
     return render_template('user.html', form=form)
 
@@ -63,8 +59,16 @@ def user_choice():
 @app.route('/creation', methods=['POST', 'GET'])
 def label_creation():
     form = LabelCreationForm()
+    generator = Generator()
     if form.validate_on_submit():
-        database.create_label(form.name.data, form.key.data, session_user[0])
+        if int(form.choice.data) == 0:
+            database.create_label(form.name.data,
+                                  generator.gen_password_by_dict(int(form.random_button_choice.data) == 0),
+                                  session_user[0])
+        else:
+            database.create_label(form.name.data,
+                                  str(generator.gen_password_base64(form.text_field.data)),
+                                  session_user[0])
         return redirect(url_for('user_choice'))
     return render_template('label_creation.html', form=form)
 
