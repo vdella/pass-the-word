@@ -34,4 +34,11 @@ def create_label(name: str, content: str, user_id: int):
     connection.commit()
 
 
-print(check_user('test'))
+def retrieve_labels(user_id: int) -> dict:
+    user_label_table = dict()
+    cur.execute('''SELECT USER_ID, NAME, CONTENT FROM "labels"''')
+    rows = cur.fetchall()
+    for row in rows:
+        if user_id == row[0]:
+            user_label_table[row[1]] = row[2]
+    return user_label_table
