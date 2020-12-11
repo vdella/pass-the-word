@@ -6,8 +6,11 @@
 {% block page_content %}
 <div class="page-header">
     <h1>Labels in registry</h1>
-    {% for label in get_labels(session_user_id) %}
-        {{ print(label) }}
-    {% endfor %}
 </div>
+    {% set BLANK_LINE = "" %}
+    {% set all_labels = get_labels(session_user_id) %}
+    {% for key, value in all_labels.items() %}
+        <h2>{{ key }}: {{ value }}</h2>
+        {{ BLANK_LINE }}
+    {% endfor %}
 {% endblock %}
