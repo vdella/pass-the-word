@@ -7,8 +7,7 @@ class Generator:
     @staticmethod
     def words() -> dict and int:
         """
-        Reads 'dict.txt' according to the returned path
-        from Editor.edit_given_path() and puts every
+        Reads 'dict.txt' and puts every
         word inside a dict().
 
         :return: a dict[number] word and the max amount of words
