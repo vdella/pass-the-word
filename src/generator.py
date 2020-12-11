@@ -1,9 +1,28 @@
 from random import randint
 from base64 import standard_b64encode
-from src.parser.reader import Reader
 
 
 class Generator:
+
+    @staticmethod
+    def words() -> dict and int:
+        """
+        Reads 'dict.txt' according to the returned path
+        from Editor.edit_given_path() and puts every
+        word inside a dict().
+
+        :return: a dict[number] word and the max amount of words
+        found inside 'dict.txt'
+        """
+        file = open('../dict.txt', 'r')
+        lines = file.readlines()
+        words = dict()
+        iterator: int = 0
+
+        for line in lines:
+            words[iterator] = line
+            iterator = iterator + 1
+        return words, len(lines)
 
     @staticmethod
     def gen_password_by_dict(split: bool) -> str:
@@ -12,7 +31,7 @@ class Generator:
         :return: 4 concatenated words from 'dict.txt'.
         """
 
-        words, sup_limit = Reader.words()
+        words, sup_limit = Generator.words()
         password = []
 
         for _ in range(4):
