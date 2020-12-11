@@ -32,5 +32,9 @@ class UserOperationForm(FlaskForm):
 
 class LabelCreationForm(FlaskForm):
     name = StringField('Type a reminder for the key', validators=[DataRequired()])
-    key = StringField('Type the key', validators=[DataRequired()])
+    choice = RadioField('Choose an option', choices=[(0, 'Remarkable'), (1, 'Random')])
+    text_field = StringField('Type a seed if Random was chosen, if you want')
+    random_button_choice = RadioField('Choose an option if Remarkable was chosen',
+                                      choices=[(0, 'With slash'), (1, 'Without slash'),
+                                               (2, 'Did not choose Remarkable')])
     submit = SubmitField('Submit')
