@@ -4,8 +4,7 @@ from wtforms.validators import DataRequired
 
 
 class FrontpageForm(FlaskForm):
-    """
-    Shown just as the execution begins. Gives user only 2 choices:
+    """Shown just as the execution begins. Gives user only 2 choices:
         * Sign up;
         * or Sign in.
     :warning for comparisons, one must use self.choice.data, NOT self.choice.choices.
@@ -23,4 +22,15 @@ class LoginForm(FlaskForm):
     """
     username = StringField('Username', validators=[DataRequired()])
     userkey = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+class UserOperationForm(FlaskForm):
+    choice = RadioField('Choose an option', choices=[(0, 'See labels'), (1, 'Create labels')])
+    submit = SubmitField('Submit')
+
+
+class LabelCreationForm(FlaskForm):
+    name = StringField('Type a reminder for the key', validators=[DataRequired()])
+    key = StringField('Type the key', validators=[DataRequired()])
     submit = SubmitField('Submit')
